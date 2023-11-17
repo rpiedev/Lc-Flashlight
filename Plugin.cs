@@ -25,18 +25,21 @@ namespace Flashlight
                 __instance.pocketedFlashlight = __instance.currentlyHeldObjectServer;
             if(Keyboard.current.fKey.wasPressedThisFrame && __instance.pocketedFlashlight is FlashlightItem && __instance.pocketedFlashlight.isHeld)
             {
-                if(__instance.pocketedFlashlight.isBeingUsed)
+                __instance.pocketedFlashlight.UseItemOnClient();
+                if (!(__instance.currentlyHeldObjectServer is FlashlightItem))
                 {
-                    __instance.pocketedFlashlight.ItemActivate(false);
-                    __instance.helmetLight.enabled = false;
-                } else
-                {
-                    __instance.pocketedFlashlight.ItemActivate(true);
-                    if (!(__instance.currentlyHeldObjectServer is FlashlightItem))
+                    (__instance.pocketedFlashlight as FlashlightItem).flashlightBulbGlow.enabled = false;
+                    (__instance.pocketedFlashlight as FlashlightItem).flashlightBulb.enabled = false;
+                    if ((__instance.pocketedFlashlight as FlashlightItem).isBeingUsed)
                     {
                         __instance.helmetLight.enabled = true;
-                        (__instance.pocketedFlashlight as FlashlightItem).flashlightBulb.enabled = false;
-                        (__instance.pocketedFlashlight as FlashlightItem).flashlightBulbGlow.enabled = false;
+                        (__instance.pocketedFlashlight as FlashlightItem).usingPlayerHelmetLight = true;
+                        (__instance.pocketedFlashlight as FlashlightItem).PocketFlashlightServerRpc(true);
+                    } else
+                    {
+                        __instance.helmetLight.enabled = false;
+                        (__instance.pocketedFlashlight as FlashlightItem).usingPlayerHelmetLight = false;
+                        (__instance.pocketedFlashlight as FlashlightItem).PocketFlashlightServerRpc(false);
                     }
                 }
             }

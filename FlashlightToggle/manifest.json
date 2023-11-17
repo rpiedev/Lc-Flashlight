@@ -1,0 +1,7 @@
+{
+    "name": "FlashlightToggle",
+    "description": "Press F to toggle a flashlight in your inventory no matter what you're holding",
+    "version_number": "1.1.0",
+    "dependencies": [],
+    "website_url": "https://github.com/redassser/Lc-Flashlight"
+}

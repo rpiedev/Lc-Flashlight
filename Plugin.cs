@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 namespace Flashlight
 {
-    [BepInPlugin("rr.Flashlight", "Flashlight", "1.0.0")]
+    [BepInPlugin("rr.Flashlight", "Flashlight", "1.2.0")]
     public class Plugin : BaseUnityPlugin
     {
         private Harmony _harmony = new Harmony("Flashlight");
@@ -13,6 +13,14 @@ namespace Flashlight
         {
             this._harmony.PatchAll(typeof(Plugin));
             this.Logger.LogInfo("------Flashlight done.------");
+        }
+
+        [HarmonyPatch(typeof(PlayerControllerB), "SpawnPlayerAnimation")]
+        [HarmonyPostfix]
+        public static void ClearFlashlight(PlayerControllerB __instance)
+        {
+            
+            __instance.pocketedFlashlight = null;
         }
 
         [HarmonyPatch(typeof(PlayerControllerB), "Update")]
@@ -23,7 +31,8 @@ namespace Flashlight
                 return;
             if(__instance.currentlyHeldObjectServer is FlashlightItem && __instance.currentlyHeldObjectServer != __instance.pocketedFlashlight)
                 __instance.pocketedFlashlight = __instance.currentlyHeldObjectServer;
-            if(Keyboard.current.fKey.wasPressedThisFrame && __instance.pocketedFlashlight is FlashlightItem && __instance.pocketedFlashlight.isHeld)
+            if (__instance.pocketedFlashlight == null) return;
+            if (Keyboard.current.fKey.wasPressedThisFrame && __instance.pocketedFlashlight is FlashlightItem && __instance.pocketedFlashlight.isHeld)
             {
                 __instance.pocketedFlashlight.UseItemOnClient();
                 if (!(__instance.currentlyHeldObjectServer is FlashlightItem))

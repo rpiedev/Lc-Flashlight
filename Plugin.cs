@@ -2,6 +2,7 @@
 using GameNetcodeStuff;
 using HarmonyLib;
 using UnityEngine.InputSystem;
+using UnityEngine;
 
 namespace Flashlight
 {
@@ -29,27 +30,35 @@ namespace Flashlight
         {
             if ((!__instance.IsOwner || !__instance.isPlayerControlled || __instance.IsServer && !__instance.isHostPlayerObject) && !__instance.isTestingPlayer)
                 return;
-            if(__instance.currentlyHeldObjectServer is FlashlightItem && __instance.currentlyHeldObjectServer != __instance.pocketedFlashlight)
+            if (__instance.inTerminalMenu) return;
+            if (!Application.isFocused) return;
+            if (__instance.currentlyHeldObjectServer is FlashlightItem && __instance.currentlyHeldObjectServer != __instance.pocketedFlashlight)
                 __instance.pocketedFlashlight = __instance.currentlyHeldObjectServer;
             if (__instance.pocketedFlashlight == null) return;
             if (Keyboard.current.fKey.wasPressedThisFrame && __instance.pocketedFlashlight is FlashlightItem && __instance.pocketedFlashlight.isHeld)
             {
-                __instance.pocketedFlashlight.UseItemOnClient();
-                if (!(__instance.currentlyHeldObjectServer is FlashlightItem))
+                try 
                 {
-                    (__instance.pocketedFlashlight as FlashlightItem).flashlightBulbGlow.enabled = false;
-                    (__instance.pocketedFlashlight as FlashlightItem).flashlightBulb.enabled = false;
-                    if ((__instance.pocketedFlashlight as FlashlightItem).isBeingUsed)
+                    __instance.pocketedFlashlight.UseItemOnClient();
+                    if (!(__instance.currentlyHeldObjectServer is FlashlightItem))
                     {
-                        __instance.helmetLight.enabled = true;
-                        (__instance.pocketedFlashlight as FlashlightItem).usingPlayerHelmetLight = true;
-                        (__instance.pocketedFlashlight as FlashlightItem).PocketFlashlightServerRpc(true);
-                    } else
-                    {
-                        __instance.helmetLight.enabled = false;
-                        (__instance.pocketedFlashlight as FlashlightItem).usingPlayerHelmetLight = false;
-                        (__instance.pocketedFlashlight as FlashlightItem).PocketFlashlightServerRpc(false);
+                        (__instance.pocketedFlashlight as FlashlightItem).flashlightBulbGlow.enabled = false;
+                        (__instance.pocketedFlashlight as FlashlightItem).flashlightBulb.enabled = false;
+                        if ((__instance.pocketedFlashlight as FlashlightItem).isBeingUsed)
+                        {
+                            __instance.helmetLight.enabled = true;
+                            (__instance.pocketedFlashlight as FlashlightItem).usingPlayerHelmetLight = true;
+                            (__instance.pocketedFlashlight as FlashlightItem).PocketFlashlightServerRpc(true);
+                        } else
+                        {
+                            __instance.helmetLight.enabled = false;
+                            (__instance.pocketedFlashlight as FlashlightItem).usingPlayerHelmetLight = false;
+                            (__instance.pocketedFlashlight as FlashlightItem).PocketFlashlightServerRpc(false);
+                        }
                     }
+                } catch 
+                { 
+                    
                 }
             }
         }

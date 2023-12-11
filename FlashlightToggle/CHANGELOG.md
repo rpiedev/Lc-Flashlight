@@ -1,6 +1,8 @@
-## v1.4.0
+## v1.4.1
 
 You can now rebind your flashlight toggle key from the in-game rebind settings! It should be the last one at the bottom. :)  
+
+Quick fix in .1, sorry!
 
 ## v1.3.1
 

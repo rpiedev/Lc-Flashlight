@@ -32,10 +32,10 @@ namespace Flashlight
                         {
                             ""name"" : ""Flashlight"",
                             ""actions"": [
-                                {""name"": ""toggle"", ""type"" : ""button""}
+                                {""name"": ""togglef"", ""type"" : ""button""}
                             ],
                             ""bindings"" : [
-                                {""path"" : """ + thing + @""", ""action"": ""toggle""}
+                                {""path"" : """ + thing + @""", ""action"": ""togglef""}
                             ]
                         }
                     ]
@@ -53,6 +53,7 @@ namespace Flashlight
         [HarmonyPrefix]
         public static void SavingToFile(IngamePlayerSettings __instance)
         {
+            if (__instance.rebindingOperation.action.name != "togglef") return;
             File.WriteAllText(path, __instance.rebindingOperation.action.controls[0].path);
             string thing = defaultkey;
             if (File.Exists(path))
@@ -81,7 +82,7 @@ namespace Flashlight
             }
             RemappableKey fl = new RemappableKey();
             setAsset(thing);
-            InputActionReference inp = InputActionReference.Create(asset.FindAction("Flashlight/toggle"));
+            InputActionReference inp = InputActionReference.Create(asset.FindAction("Flashlight/togglef"));
             fl.ControlName = "Flashlight";
             fl.currentInput = inp;
 
@@ -108,7 +109,7 @@ namespace Flashlight
                 thing = File.ReadAllText(path);
             }
             if (!asset || !asset.enabled) { setAsset(thing); asset.Enable(); }
-            if (asset.FindAction("Flashlight/toggle").triggered && __instance.pocketedFlashlight is FlashlightItem && __instance.pocketedFlashlight.isHeld)
+            if (asset.FindAction("Flashlight/togglef").triggered && __instance.pocketedFlashlight is FlashlightItem && __instance.pocketedFlashlight.isHeld)
             {
                 try 
                 {

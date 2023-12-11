@@ -1,3 +1,10 @@
+## v1.4.0
+
+You can now rebind your flashlight toggle key from the in-game rebind settings! It should be the last one at the bottom. :)  
+
+## v1.3.1
+
+Made it so flashlight does not activate when using terminal / chat or game is unfocused
 
 ## v1.2.0
 

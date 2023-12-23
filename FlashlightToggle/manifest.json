@@ -1,7 +1,10 @@
 {
     "name": "FlashlightToggle",
     "description": "Press F to toggle a flashlight in your inventory. CLIENT SIDE. REBINDABLE IN-GAME",
-    "version_number": "1.4.1",
-    "dependencies": [],
+    "version_number": "1.5.0",
+    "dependencies": [
+        "BepInEx-BepInExPack-5.4.2100",
+        "Rune580-LethalCompany_InputUtils-0.4.3"
+    ],
     "website_url": "https://github.com/redassser/Lc-Flashlight"
 }

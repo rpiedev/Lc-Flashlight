@@ -1,3 +1,7 @@
+## v1.5.0
+
+Added Input Utils as dependency.
+
 ## v1.4.1
 
 You can now rebind your flashlight toggle key from the in-game rebind settings! It should be the last one at the bottom. :)  
